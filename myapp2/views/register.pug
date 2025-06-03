@@ -1,0 +1,13 @@
+h1 Register
+form(action="/register", method="POST")
+  div(style="display:grid;grid-template-columns:1fr 1fr;gap:20px 5px;font-size:28px;max-width:500px;")
+    label(for="username") Full Name
+    input(type="text", name="name", placeholder="Michael Sharma")
+    label(for="email") Email
+    input(type="text", name="email", placeholder="michael@sharma.com")
+    label(for="password") Password
+    input(type="password", name="password", placeholder="********")
+    label(for="confirmPassword") Confirm Password
+    input(type="password", name="confirmPassword", placeholder="********")
+    div(style="display:flex;flex-direction:column;gap:5px;")
+        button(type="submit" style="margin-top:10px;padding:10px;") Register

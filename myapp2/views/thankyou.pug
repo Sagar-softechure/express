@@ -1,0 +1,8 @@
+h1 Thank you #{user.name}
+p Your email is #{user.email}
+p redirecting to home page in 5 seconds...
+script.
+  setTimeout(() => {
+    window.location.href = '/';
+  }, 5000);
+

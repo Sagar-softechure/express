@@ -1,0 +1,25 @@
+{
+  "name": "myapp2",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "powershell -Command \"$env:DEBUG='myapp2:*'; $env:DEBUG_COLORS='true'; $env:DEBUG_DEPTH='3'; npx nodemon ./bin/www\""
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "dotenv": "^16.5.0",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
+    "jsonwebtoken": "^9.0.2",
+    "method-override": "^3.0.0",
+    "mongodb": "^6.16.0",
+    "mongoose": "^8.15.1",
+    "morgan": "~1.9.1",
+    "pug": "^3.0.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
