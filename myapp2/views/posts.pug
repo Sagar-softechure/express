@@ -1,0 +1,35 @@
+
+if posts && posts.length > 0
+    div(style="border: 1px solid #ccc; padding: 10px; margin: 10px;display:grid;grid-template-columns:repeat(6,1fr);gap:10px;")
+        p title
+        p content
+        p author
+        p tags
+        p isPublished
+        p actions
+        each post in posts
+            div 
+                p= post.title
+                p= post.author.role === 'admin' ? 'Admin post' : ''
+            p= post.content
+            p= post.author.name
+            p= post.tags
+            p= post.isPublished
+            div(style="display:flex;gap:10px;")
+                a(href=`/posts/edit/${post._id}`) Edit
+                a(href=`/posts/delete/${post._id}`) Delete
+                a(href=`/posts/view/${post._id}`) View
+else
+  p No posts found.
+
+form(action="/posts" method="POST")
+  input(type="text" name="title" placeholder="Title")
+  input(type="text" name="content" placeholder="Content")
+  select(name="author")
+    option(value="") Select Author
+    each user in users
+      option(value=user._id)= user.name
+  input(type="text" name="tags" placeholder="Tags")
+  input(type="checkbox" name="isPublished" placeholder="Is Published")
+  label(for="isPublished") Is Published
+  button(type="submit") Create Post

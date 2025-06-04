@@ -1,3 +1,22 @@
 h1 #{title}
-p #{user.name} (email: #{user.email})
-
+if post
+  p #{post.title}
+  p #{post.content}
+  p #{post.author}
+  p #{post.tags}
+  p #{post.isPublished}
+  p #{post.createdAt}
+  form(action="/comments/" + post._id, method="POST")
+    input(type="text" name="content" placeholder="Comment")
+    button(type="submit") Add Comment
+  if comments
+    each comment in comments
+      p #{comment.content}
+      p #{comment.createdAt}
+      form(action="/comments/" + comment._id + "?_method=DELETE", method="POST")
+        button(type="submit") Delete Comment
+if user
+  p #{user.name}
+  p #{user.email}
+  p #{user.role}
+  p #{user.createdAt}

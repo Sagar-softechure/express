@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const userStore = require('../models/User');
+const Post = require('../models/Post');
 
 
 // GET form to add user
@@ -113,22 +114,31 @@ router.put('/:id', async (req, res) => {
 
 // DELETE user
 router.delete('/:id', async (req, res) => {
-  // res.send('asd');
   const userId = req.params.id;
 
   try {
-    const deletedUser = await userStore.findByIdAndDelete(userId);
+    // First, find the user by ID
+    const user = await userStore.findById(userId);
 
-    if (!deletedUser) {
+    if (!user) {
       return res.status(404).send('User not found.');
     }
 
+    // Prevent deletion if user is protected
+    if (user.protected) {
+      return res.status(403).send('This user cannot be deleted.');
+    }
+
+    // Proceed to delete
+    await userStore.findByIdAndDelete(userId);
     res.redirect('/users');
+    console.log('User deleted successfully');
   } catch (err) {
     console.error(err);
     res.status(500).send('Invalid user ID or delete failed.');
   }
 });
+
 
 router.use((err, req, res, next) => {
   res.status(500).json({ error: err.message || 'Internal Server Error' });

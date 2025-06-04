@@ -1,13 +1,36 @@
 extends layout
 
 block content
-  h1= title
-  form(action=(userData ? ('/users/' + userData._id + '?_method=PUT') : '/users'), method="POST")
-    div
-      label(for="name") Name:
-      input(type="text" name="name" value=userData? userData.name : '' required)
-    div
-      label(for="email") Email:
-      input(type="email" name="email" value=userData? userData.email : '' required)
-    div
-      button(type="submit") SUBMIT
+  p= title
+  if userData
+    form(action=(userData ? ('/users/' + userData._id + '?_method=PUT') : '/users'), method="POST")
+      div
+        label(for="name") Name:
+        input(type="text" name="name" value=userData? userData.name : '' required)
+      div
+        label(for="email") Email:
+        input(type="email" name="email" value=userData? userData.email : '' required)
+      div
+        button(type="submit") SUBMIT
+  if postData
+    form(action=(postData ? ('/posts/' + postData._id + '?_method=PUT') : '/posts'), method="POST")
+      div
+        label(for="title") Title:
+        input(type="text" name="title" value=postData? postData.title : '' required)
+      div
+        label(for="content") Content:
+        input(type="text" name="content" value=postData? postData.content : '' required)
+      div
+        label(for="author") Author:
+        select(name="author")
+          option(value="") Select Author
+          each user in users
+            option(value=user._id selected=(postData? postData.author._id.toString() === user._id.toString() : false))= user.name
+      div
+        label(for="tags") Tags:
+        input(type="text" name="tags" value=postData? postData.tags.join(',') : '' required)
+      div
+        label(for="isPublished") Is Published:
+        input(type="checkbox" name="isPublished" value=postData? postData.isPublished : '' checked=postData? postData.isPublished : false)
+      div
+        button(type="submit") SUBMIT

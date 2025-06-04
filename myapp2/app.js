@@ -11,7 +11,8 @@ var app = express();
 
 require('./db');
 var usersRouter = require('./routes/users');
-
+var postsRouter = require('./routes/posts');
+var commentRouter = require('./routes/comment');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -25,8 +26,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(methodOverride('_method'));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/posts', postsRouter);
+app.use('/comments', commentRouter);
 app.use('/', authRouter);
-
 
 
 // catch 404 and forward to error handler
