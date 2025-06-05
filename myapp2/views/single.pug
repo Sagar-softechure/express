@@ -1,4 +1,5 @@
 h1 #{title}
+
 if post
   p #{post.title}
   p #{post.content}
@@ -6,17 +7,25 @@ if post
   p #{post.tags}
   p #{post.isPublished}
   p #{post.createdAt}
-  form(action="/comments/" + post._id, method="POST")
-    input(type="text" name="content" placeholder="Comment")
+
+  // ✅ Comment form
+  form#commentForm
+    input(type="text", name="content", placeholder="Write your comment")
     button(type="submit") Add Comment
+
   if comments
     each comment in comments
       p #{comment.content}
       p #{comment.createdAt}
+      p #{comment._id}
       form(action="/comments/" + comment._id + "?_method=DELETE", method="POST")
         button(type="submit") Delete Comment
+      form(action="/comments/edit/" + comment._id, method="GET")
+        button(type="submit") Update Comment
+
 if user
   p #{user.name}
   p #{user.email}
   p #{user.role}
   p #{user.createdAt}
+

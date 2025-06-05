@@ -34,3 +34,10 @@ block content
         input(type="checkbox" name="isPublished" value=postData? postData.isPublished : '' checked=postData? postData.isPublished : false)
       div
         button(type="submit") SUBMIT
+  if commentData
+    form(action=(commentData ? ('/comments/' + commentData._id + '?_method=PUT') : '/comments'), method="POST")
+      div
+        label(for="content") Content:
+        input(type="text" name="content" value=commentData? commentData.content : '' required)
+      div
+        button(type="submit") SUBMIT
