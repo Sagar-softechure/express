@@ -29,3 +29,26 @@ if user
   p #{user.role}
   p #{user.createdAt}
 
+script.
+  document.getElementById('commentForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    const content = this.elements['content'].value;
+    const postId = "#{post._id}";
+    const accessToken = localStorage.getItem('accessToken'); // or get from a cookie
+    console.log(accessToken);
+
+    const res = await fetch(`/comments/${postId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`
+      },
+      body: JSON.stringify({ content })
+    });
+
+    if (res.ok) {
+      location.reload();
+    } else {
+      alert('Error adding comment');
+    }
+  });

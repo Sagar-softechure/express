@@ -14,8 +14,9 @@ block content
         li #{user.name} with email id: #{user.email} &nbsp;
           form(action='/users/' + user._id + '?_method=DELETE', method='POST', style='display:inline')
             button(type='submit', style='display:inline;margin-left:10px;padding:8px 10px; background:#e3e3e3;color:#2a2a2a;border:1px solid #2a2a2a;text-decoration:none;font-size:10px;cursor:pointer;') DELETE
-          a(href='/users/edit/'+ user._id , style='display:inline;margin-left:10px;padding:8px 10px; background:#e3e3e3;color:#2a2a2a;border:1px solid #2a2a2a;text-decoration:none;font-size:10px;cursor:pointer;') EDIT
-          a(href='/users/'+ user._id , style='display:inline;margin-left:10px;padding:8px 10px; background:#e3e3e3;color:#2a2a2a;border:1px solid #2a2a2a;text-decoration:none;font-size:10px;cursor:pointer;') VIEW
+          if user && user.role === 'admin'
+            a(href='/users/edit/'+ user._id , style='display:inline;margin-left:10px;padding:8px 10px; background:#e3e3e3;color:#2a2a2a;border:1px solid #2a2a2a;text-decoration:none;font-size:10px;cursor:pointer;') EDIT
+            a(href='/users/'+ user._id , style='display:inline;margin-left:10px;padding:8px 10px; background:#e3e3e3;color:#2a2a2a;border:1px solid #2a2a2a;text-decoration:none;font-size:10px;cursor:pointer;') VIEW
     if message
       p #{message}
 

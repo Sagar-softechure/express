@@ -3,14 +3,15 @@ const Post = require('../models/Post');
 const router = express.Router();
 const User = require('../models/User');
 const Comment = require('../models/Comment');
-router.get('/', async (req, res) => {
+const authenticate = require('../middleware/authenticate');
+router.get('/' ,async (req, res) => {
     const users = await User.find();
     const posts = await Post.find().populate('author');
     const comments = await Comment.find();
     res.render('posts', { posts, users, comments });
 });
 
-router.post('/', async (req, res) => {
+router.post('/',authenticate, async (req, res) => {
     const { title, content, author, tags, isPublished } = req.body;
   
     if (!title || !content) {
@@ -32,7 +33,7 @@ router.post('/', async (req, res) => {
       res.status(500).send('Something went wrong.'+err);
     }
   });
-  router.get('/edit/:id',async(req,res)=>{
+  router.get('/edit/:id', authenticate, async(req,res)=>{
     const userId = req.params.id;
     try {
       const post = await Post.findById(userId);
@@ -48,7 +49,7 @@ router.post('/', async (req, res) => {
       res.status(500).send('Invalid post or server error');
     }
   });
-  router.get('/view/:id', async (req, res) => {
+  router.get('/view/:id',authenticate ,async (req, res) => {
     const postId = req.params.id;
   
     try {
@@ -68,12 +69,12 @@ router.post('/', async (req, res) => {
       res.status(500).send('Invalid post ID or server error');
     }
   });
-  router.get('/delete/:id',async(req,res)=>{
+  router.get('/delete/:id', authenticate , async(req,res)=>{
     const postId = req.params.id;
     await Post.findByIdAndDelete(postId);
     res.redirect('/posts');
   });
-  router.put('/:id', async (req, res) => {
+  router.put('/:id',authenticate , async (req, res) => {
     const postId = req.params.id;
     const updateData = {};
   

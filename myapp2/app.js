@@ -6,10 +6,31 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var authRouter = require('./routes/auth');
-const methodOverride = require('method-override')
-var app = express();
+const methodOverride = require('method-override');
+const socketIO = require('socket.io');
+const http = require('http');
+const server = http.createServer(app);
+const io = socketIO(server);
 
 require('./db');
+
+var app = express();
+
+app.io = io;
+io.on('connection', (socket) => {
+  console.log('User connected: ' + socket.id);
+
+  socket.on('new-comment', (data) => {
+    // Broadcast comment to all clients
+    io.emit('comment-broadcast', data);
+  });
+
+  socket.on('disconnect', () => {
+    console.log('User disconnected: ' + socket.id);
+  });
+});
+
+
 var usersRouter = require('./routes/users');
 var postsRouter = require('./routes/posts');
 var commentRouter = require('./routes/comment');
