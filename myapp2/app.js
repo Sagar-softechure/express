@@ -1,3 +1,4 @@
+const cors = require('cors');
 require('./db');
 var createError = require('http-errors');
 var express = require('express');
@@ -7,28 +8,11 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var authRouter = require('./routes/auth');
 const methodOverride = require('method-override');
-const socketIO = require('socket.io');
 const http = require('http');
-const server = http.createServer(app);
-const io = socketIO(server);
-
-require('./db');
 
 var app = express();
 
-app.io = io;
-io.on('connection', (socket) => {
-  console.log('User connected: ' + socket.id);
-
-  socket.on('new-comment', (data) => {
-    // Broadcast comment to all clients
-    io.emit('comment-broadcast', data);
-  });
-
-  socket.on('disconnect', () => {
-    console.log('User disconnected: ' + socket.id);
-  });
-});
+app.use(cors());
 
 
 var usersRouter = require('./routes/users');
@@ -45,10 +29,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(methodOverride('_method'));
-app.use('/', indexRouter);
+// app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/posts', postsRouter);
-app.use('/comments', commentRouter);
+// app.use('/posts', postsRouter);
+// app.use('/comments', commentRouter);
 app.use('/', authRouter);
 
 

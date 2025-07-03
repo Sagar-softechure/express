@@ -5,31 +5,46 @@ const RefreshToken = require('../models/RefreshToken');
 const bcrypt = require('bcryptjs');
 const { generateAccessToken, generateRefreshToken } = require('../utils/jwt');
 const jwt = require('jsonwebtoken');
-  router.get('/login', function(req, res, next) {
-    res.render('login', { title: 'Login' });
-  });
+ 
   
-  router.get('/register', function(req, res, next) {
-    res.render('register', { title: 'Register' });
-  });
-  
-  router.post('/register', async function(req, res, next) {
+  router.post('/register', async function(req, res) {
     const { name, email, password, confirmPassword } = req.body;
     try {
       if (password !== confirmPassword) {
         return res.status(400).send('Passwords do not match');
       }
-    const user = new User({ name, email, password });
-    await user.save();
-    res.redirect('/users');
+      const user = new User({ name, email, password });
+      await user.save();
+      res.status(201).send('User registered successfully');
     } catch (error) {
       if (error.code === 11000) {
         return res.status(400).send('Email already exists');
       }
-      
-      res.status(500).send('Something went wrong');
+      res.status(500).send(error);
     }
   });
+  // router.post('/register', async function(req, res) {
+  //   const { name, email, password, confirmPassword } = req.body;
+  
+  //   if (password !== confirmPassword) {
+  //     return res.status(400).json({ error: 'Passwords do not match' });
+  //   }
+  
+  //   try {
+  //     // Hash the password before saving
+  //     const hashedPassword = await bcrypt.hash(password, 10);
+  
+  //     const user = new User({ name, email, password: hashedPassword });
+  //     await user.save();
+  
+  //     res.status(201).json({ message: 'User registered successfully' });
+  //   } catch (error) {
+  //     if (error.code === 11000) {
+  //       return res.status(400).json({ error: 'Email already exists' });
+  //     }
+  //     res.status(500).json({ error: 'Something went wrong' });
+  //   }
+  // });
   
   router.post('/login', async (req, res) => {
     const { email, password } = req.body;

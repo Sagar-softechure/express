@@ -7,11 +7,11 @@ const authorizeAdmin = require('../middleware/authorizeAdmin');
 
 
 // GET form to add user
-router.get('/new',authenticate, authorizeAdmin, (req, res) => {
+router.get('/new', (req, res) => {
   res.render('form', { title: 'Add User' });
 });
 
-router.get('/edit/:id',authenticate, authorizeAdmin,async(req,res)=>{
+router.get('/edit/:id',async(req,res)=>{
   const userId = req.params.id;
   try {
     const user = await userStore.findById(userId);
@@ -28,7 +28,7 @@ router.get('/edit/:id',authenticate, authorizeAdmin,async(req,res)=>{
 });
 
 // GET all users (homepage)
-router.get('/',authenticate, authorizeAdmin, async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const getuser = await userStore.find();
     res.render('index', {
@@ -42,7 +42,7 @@ router.get('/',authenticate, authorizeAdmin, async (req, res) => {
 });
 
 // POST create new user
-router.post('/',authenticate, authorizeAdmin, async (req, res) => {
+router.post('/', async (req, res) => {
   const { name, email, age } = req.body;
 
   if (!name || !email || !age) {
@@ -64,7 +64,7 @@ router.post('/',authenticate, authorizeAdmin, async (req, res) => {
 });
 
 // GET a specific user
-router.get('/:id',authenticate, authorizeAdmin, async (req, res) => {
+router.get('/:id', async (req, res) => {
   const userId = req.params.id;
 
   try {
@@ -85,7 +85,7 @@ router.get('/:id',authenticate, authorizeAdmin, async (req, res) => {
 });
 
 // PUT update user
-router.put('/:id',authenticate, authorizeAdmin, async (req, res) => {
+router.put('/:id', async (req, res) => {
   const userId = req.params.id;
   const updateData = {};
 
@@ -115,7 +115,7 @@ router.put('/:id',authenticate, authorizeAdmin, async (req, res) => {
 });
 
 // DELETE user
-router.delete('/:id',authenticate, authorizeAdmin, async (req, res) => {
+router.delete('/:id', async (req, res) => {
   const userId = req.params.id;
 
   try {
