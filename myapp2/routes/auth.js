@@ -11,16 +11,16 @@ const jwt = require('jsonwebtoken');
     const { name, email, password, confirmPassword } = req.body;
     try {
       if (password !== confirmPassword) {
-        return res.status(400).send('Passwords do not match');
+        return res.status(400).json({ message: 'Passwords do not match' });
       }
       const user = new User({ name, email, password });
       await user.save();
-      res.status(201).send('User registered successfully');
+      res.status(201).json({ message: 'User registered successfully' });
     } catch (error) {
       if (error.code === 11000) {
-        return res.status(400).send('Email already exists');
+        return res.status(400).json({ message: 'Email already exists' });
       }
-      res.status(500).send(error);
+      res.status(500).json({ message: error.message });
     }
   });
   // router.post('/register', async function(req, res) {
@@ -85,6 +85,7 @@ const jwt = require('jsonwebtoken');
       accessToken,
       user: {
         id: user._id,
+        name: user.name,
         email: user.email,
         role: user.role
       }
